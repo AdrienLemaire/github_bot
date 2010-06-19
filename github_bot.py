@@ -12,6 +12,7 @@ from pyquery import PyQuery as pq
 from sys import stdout
 import logging
 from termcolor import colored
+from sendMail import sendMail
 
 
 def github_connect():

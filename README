@@ -4,6 +4,14 @@ living in London, so I made this little program, which will allow you to see
 my python skills.
 
 
+Dependencies:
+~~~~~~~~~~~~~
+ - python 2.6
+ - mechanize
+ - pyquery
+ - termcolor
+
+
 To do:
 ~~~~~~
  - Send a mail to each developer from the list
