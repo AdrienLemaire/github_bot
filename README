@@ -1,0 +1,14 @@
+I am currently seeking for a job in Python Software Development in London,
+and it was really long to send a mail to each Python Developer from GitHub 
+living in London, so I made this little program, which will allow you to see 
+my python skills.
+
+
+To do:
+~~~~~~
+ - Send a mail to each developer from the list
+
+
+How to use:
+~~~~~~~~~~~
+ $ python github_bot.py
