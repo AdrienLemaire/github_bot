@@ -12,14 +12,16 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import Encoders
 
-def sendMail(firstname, email, file):
-    sender = "lemaire.adrien@gmail.com"
+
+def sendMail(fullname, email):
+    file = "CV Adrien Lemaire.06_2010.pdf" # Change by your own file
+    sender = "lemaire.adrien@gmail.com" # put your email here
     recipient = email
     msg = MIMEMultipart('alternative')
     msg['Subject'] = 'Seeking for a job in Python Software Development'
     msg['From'] = sender
     msg['To'] = recipient
-    text = "Hi " + firstname + ",\n\n" +\
+    text = "Hi " + fullname + ",\n\n" +\
         "I'm Adrien LEMAIRE, 22 years old, student in the french Computer " +\
         "Science school called SUPINFO. I'm currently finishing my school " +\
         "year in San Francisco, and I'll go in London (campus located on " +\
@@ -34,17 +36,14 @@ def sendMail(firstname, email, file):
         "Thank you very much, and sorry for the disturb in any case,\n" +\
         "Sincerely,\nAdrien LEMAIRE"
     msg.attach(MIMEText(text, 'plain'))
-    file = MIMEBase('application', 'octet-stream')
-    file.set_payload(open(file, "rb").read())
-    Encoders.encode_base64(file)
-    file.add_header('Content-Disposition', 'attachment; ' +\
+    part = MIMEBase('application', 'octet-stream')
+    part.set_payload(open(file, "rb").read())
+    Encoders.encode_base64(part)
+    part.add_header('Content-Disposition', 'attachment; ' +\
         'filename="' + file + '"')
-    msg.attach(file)
+    msg.attach(part)
     s = smtplib.SMTP('smtp.gmail.com', 587)
     s.starttls()
     s.login("lemaire.adrien@gmail.com", "password")
     s.sendmail(sender, recipient, msg.as_string())
     s.quit()
-
-file = "CV Adrien Lemaire.06_2010.pdf"
-sendMail("Adrien", "lemaire.adrien@gmail.com", file)

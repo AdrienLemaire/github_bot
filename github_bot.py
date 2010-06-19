@@ -55,8 +55,15 @@ def search(type, language, location):
                         request = br.follow_link(link)
                         d = pq(request.read())
                         try:
-                            message += unquote(d('.email').text().split("'")\
+                            fullname = d(".fn").text()
+                        except:
+                            fullname = ""
+                        try:
+                            email = unquote(d('.email').text().split("'")\
                                     [-2]).split(">")[1].split("<")[0]
+                            sendMail(fullname, email)
+                            message += email + \
+                                    colored(" / mail sent !", "green")
                         except:
                             message += colored("no email", "red")
                     except:
