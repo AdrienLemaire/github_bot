@@ -19,14 +19,13 @@ def github_connect():
     """Connect to the website"""
     br = Browser()
     br.addheaders = [('User-agent', 'Firefox')]
-    requete = br.open('https://github.com/login')
+    br.open('https://github.com/login')
     return br
 
 
 def github_login(login, password):
     """login, you don't need it to perform a research"""
     br = github_connect()
-    d = pq(requete.read())
     br.select_form(nr=1)
     br['login'] = login
     br['password'] = password

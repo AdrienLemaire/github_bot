@@ -12,11 +12,14 @@ Dependencies:
  - termcolor
 
 
-To do:
-~~~~~~
- - Send a mail to each developer from the list
-
-
 How to use:
 ~~~~~~~~~~~
  $ python github_bot.py
+
+
+
+To do:
+~~~~~~
+You can easily adapt this program to your needs, but if you want me to make it
+more user friendly (catch argvs for example), just ask, and I'll spend a few
+time to adapt it.

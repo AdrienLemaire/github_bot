@@ -47,3 +47,5 @@ def sendMail(fullname, email):
     s.login("lemaire.adrien@gmail.com", "password")
     s.sendmail(sender, recipient, msg.as_string())
     s.quit()
+
+#sendMail("Adrien", "lemaire.adrien@gmail.com")
