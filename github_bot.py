@@ -15,17 +15,17 @@ from termcolor import colored
 from sendMail import sendMail
 
 
-def github_connect():
+def github_connect(path=""):
     """Connect to the website"""
     br = Browser()
     br.addheaders = [('User-agent', 'Firefox')]
-    br.open('https://github.com/login')
+    br.open('https://github.com/%s' % path)
     return br
 
 
 def github_login(login, password):
     """login, you don't need it to perform a research"""
-    br = github_connect()
+    br = github_connect("login")
     br.select_form(nr=1)
     br['login'] = login
     br['password'] = password
@@ -44,9 +44,11 @@ def search(type, language, location):
         br['start_value'] = str(page_nb)
         br['q'] = 'location:' + location
         request = br.submit()
-        d = pq(request.read())
-        pages_count = int(d('.pagination').text().split()[-1])
-        for nickname in d('.result a').map(lambda i, a: pq(a).text()):
+        page = pq(request.read())
+        import ipdb; ipdb.set_trace()
+        pagination = page('.pagination').text()
+        pages_count = int(pagination[-1]) if pagination else 1
+        for nickname in page('.result a').map(lambda i, a: pq(a).text()):
             message = colored(nickname, "blue") + " => "
             for link in br.links():
                 if nickname in link.text:
@@ -60,7 +62,7 @@ def search(type, language, location):
                         try:
                             email = unquote(d('.email').text().split("'")\
                                     [-2]).split(">")[1].split("<")[0]
-                            sendMail(fullname, email)
+                            #sendMail(fullname, email)
                             message += email + \
                                     colored(" / mail sent !", "green")
                         except:
@@ -78,4 +80,4 @@ def search(type, language, location):
 
 #br = github_login("Fandekasp", "password")
 br = github_connect()
-search('Users', 'python', 'London')
+search('Users', 'Any Language', 'Okinawa')
