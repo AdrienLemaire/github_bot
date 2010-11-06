@@ -28,6 +28,11 @@ def sendMail(fullname, recipient):
     msg['Subject'] = MAIL_TITLE
     msg['From'] = SENDER
     msg['To'] = recipient
+    try:
+        """If there are not-utf8 characters, we exclude the name"""
+        MIMEText(fullname, 'plain')
+    except:
+        fullname = ""
     text = "Hi %s,\n%s" % (fullname or "", MAIL_MESSAGE)
     msg.attach(MIMEText(text, 'plain'))
     part = MIMEBase('application', 'octet-stream')
@@ -42,4 +47,4 @@ def sendMail(fullname, recipient):
     s.sendmail(SENDER, recipient, msg.as_string())
     s.quit()
 
-sendMail(None, SENDER)  # test
+#sendMail(u'Adrien', SENDER)  # test

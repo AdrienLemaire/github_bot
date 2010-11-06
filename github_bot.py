@@ -62,13 +62,13 @@ def search(type, language, location):
                 if nickname in link.text:
                     try:
                         request = br.follow_link(link)
-                        d = pq(request.read())
+                        content = pq(request.read())
                         try:
-                            fullname = d(".fn").text()
+                            fullname = content(".fn").text()
                         except:
                             fullname = ""
                         try:
-                            email = unquote(d('.email').text().split("'")\
+                            email = unquote(content('.email').text().split("'")\
                                     [-2]).split(">")[1].split("<")[0]
                             sendMail(fullname, email)
                             message += email + \
