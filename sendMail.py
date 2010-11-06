@@ -28,7 +28,7 @@ def sendMail(fullname, recipient):
     msg['Subject'] = MAIL_TITLE
     msg['From'] = SENDER
     msg['To'] = recipient
-    text = "Hi %s,\n%s" % (fullname, MAIL_MESSAGE)
+    text = "Hi %s,\n%s" % (fullname or "", MAIL_MESSAGE)
     msg.attach(MIMEText(text, 'plain'))
     part = MIMEBase('application', 'octet-stream')
     part.set_payload(open(FILE_JOINED, "rb").read())
@@ -42,4 +42,4 @@ def sendMail(fullname, recipient):
     s.sendmail(SENDER, recipient, msg.as_string())
     s.quit()
 
-# sendMail("Adrien", SENDER)  # test
+sendMail(None, SENDER)  # test

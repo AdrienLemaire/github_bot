@@ -54,7 +54,6 @@ def search(type, language, location):
         br['q'] = 'location:' + location
         request = br.submit()
         page = pq(request.read())
-        import ipdb; ipdb.set_trace()
         pagination = page('.pagination').text()
         pages_count = int(pagination[-1]) if pagination else 1
         for nickname in page('.result a').map(lambda i, a: pq(a).text()):
@@ -71,7 +70,7 @@ def search(type, language, location):
                         try:
                             email = unquote(d('.email').text().split("'")\
                                     [-2]).split(">")[1].split("<")[0]
-                            #sendMail(fullname, email)
+                            sendMail(fullname, email)
                             message += email + \
                                     colored(" / mail sent !", "green")
                         except:
