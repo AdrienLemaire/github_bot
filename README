@@ -1,8 +1,4 @@
-I am currently seeking for a job in Python Software Development in London,
-and it was really long to send a mail to each Python Developer from GitHub 
-living in London, so I made this little program, which will allow you to see 
-my python skills.
-
+Useful bot to expoit the github search box in a large scale
 
 Dependencies:
 ~~~~~~~~~~~~~
@@ -16,10 +12,21 @@ How to use:
 ~~~~~~~~~~~
  $ python github_bot.py
 
+You have to create a settings file and fill the following variables:
+ - github account
+    * USERNAME
+    * PASSWORD
+ - search informations
+    * TYPE_SEARCH (e.g. "Users")
+    * TYPE_LANGUAGE (e.g. "Python")
+    * LOCATION (e.g. "London")
+ - your email
+    * SENDER
+    * EMAIL_PASSWORD
+    * HOST (e.g. smtp.gmail.com)
+    * PORT (e.g 587 for google)
+ - your message
+    * FILE_JOINED (path to the file)
+    * MAIL_TITLE
+    * MAIL_MESSAGE
 
-
-To do:
-~~~~~~
-You can easily adapt this program to your needs, but if you want me to make it
-more user friendly (catch argvs for example), just ask, and I'll spend a few
-time to adapt it.

@@ -6,13 +6,22 @@ Author: Adrien Lemaire
 Description: A small webscraper bot to get an emails' list
 '''
 
-from mechanize import Browser
-from urllib import unquote
-from pyquery import PyQuery as pq
-from sys import stdout
+# from python
 import logging
+from mechanize import Browser
+from pyquery import PyQuery as pq
 from termcolor import colored
+from urllib import unquote
 from sendMail import sendMail
+from sys import stdout
+
+# from project
+try:
+   from local_settings import *
+except:
+   import warnings
+   warnings.warn("Please change you local settings file to be called "\
+                 "local_settings.py")
 
 
 def github_connect(path=""):
@@ -78,6 +87,6 @@ def search(type, language, location):
         page_nb += 1
 
 
-#br = github_login("Fandekasp", "password")
+#br = github_login(username, password)
 br = github_connect()
-search('Users', 'Any Language', 'Okinawa')
+search(TYPE_SEARCH, TYPE_LANGUAGE, LOCATION)
