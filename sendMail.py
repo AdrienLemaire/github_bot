@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# -*- coding:Utf-8 -*-
+# -*- coding: utf-8 -*-
 '''
 File: sendMail.py
 Author: Adrien Lemaire
@@ -8,6 +8,7 @@ Description: Send an email to seek after a job from my gmail account
 
 # from python
 from email import Encoders
+from email.Header import Header
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -23,18 +24,13 @@ except:
 
 
 
-def sendMail(fullname, recipient):
+def sendMail(fullname, recipient, encoding="utf-8"):
     msg = MIMEMultipart('alternative')
-    msg['Subject'] = MAIL_TITLE
+    msg['Subject'] = Header(MAIL_TITLE.encode(encoding), encoding)
     msg['From'] = SENDER
     msg['To'] = recipient
-    try:
-        """If there are not-utf8 characters, we exclude the name"""
-        MIMEText(fullname, 'plain')
-    except:
-        fullname = ""
-    text = "Hi %s,\n%s" % (fullname or "", MAIL_MESSAGE)
-    msg.attach(MIMEText(text, 'plain'))
+    text = u"こんにちは %s さん,\n%s" % (fullname or "", MAIL_MESSAGE)
+    msg.attach(MIMEText(text.encode(encoding), 'plain', encoding))
     part = MIMEBase('application', 'octet-stream')
     part.set_payload(open(FILE_JOINED, "rb").read())
     Encoders.encode_base64(part)
@@ -47,4 +43,4 @@ def sendMail(fullname, recipient):
     s.sendmail(SENDER, recipient, msg.as_string())
     s.quit()
 
-#sendMail(u'Adrien', SENDER)  # test
+#sendMail(u'えいどりあん', SENDER)  # test
