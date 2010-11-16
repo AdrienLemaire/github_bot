@@ -1,0 +1,5 @@
+# Libraries required by the Github Bot
+
+mechanize
+pyquery
+termcolor
