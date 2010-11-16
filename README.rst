@@ -4,17 +4,20 @@ Github Bot
 Useful bot to exploit the github search box in a large scale and send email to
 the users.
 
-Dependencies:
+
+Dependencies
 +++++++++++++
 
-Make sure that you have a working Python_ 2.x >= 2.6
-::
+Make sure that you have a working Python_ 2.x >= 2.6::
+
     $ pip install -r requirements.txt
 
-How to use:
+
+How to use
 +++++++++++
 
-You have to create a ``local_settings.py`` file and fill the following variables:
+You have to create a ``local_settings.py`` file and fill the following variables
+
  - github account
     * **USERNAME**
     * **PASSWORD**
@@ -35,6 +38,7 @@ You have to create a ``local_settings.py`` file and fill the following variables
     * **MAIL_MESSAGE**
 
 Then you just have to run the project::
+
     $ python github_bot.py
 
 
