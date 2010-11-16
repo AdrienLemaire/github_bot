@@ -44,7 +44,10 @@ def github_login(login, password):
 
 def search(type, language, location):
     """Search the contacts according to your criteria"""
-    page_nb = 1 # To send emails from the first page
+
+    global PAGE_START, USER_START
+    user_nb = 0 # counter
+
     while True:
         br.select_form(nr=0)
         br.set_all_readonly(False)
@@ -55,7 +58,7 @@ def search(type, language, location):
         except:
             """After, when we are in the search page, it requires a sequence"""
             br['type'] = [type]
-        br['start_value'] = str(page_nb)
+        br['start_value'] = str(PAGE_START)
         br['q'] = 'location:%s' % location
         request = br.submit()
         page = pq(request.read())
@@ -63,6 +66,7 @@ def search(type, language, location):
         pages_count = int(pagination[-1]) if pagination else 1
         for nickname in page('.result a').map(lambda i, a: pq(a).text()):
             message = colored(nickname, "blue") + " => "
+            user_nb += 1
             for link in br.links():
                 if nickname in link.text:
                     try:
@@ -72,23 +76,26 @@ def search(type, language, location):
                             fullname = content(".fn").text()
                         except:
                             fullname = ""
-                        try:
-                            email = unquote(content('.email').text().split("'")\
-                                    [-2]).split(">")[1].split("<")[0]
-                            sendMail(fullname, email)
-                            message += email + \
-                                    colored(" / mail sent !", "green")
-                        except:
-                            message += colored("no email", "red")
+                        if user_nb >= USER_START:
+                            try:
+                                email = unquote(content('.email').text().split("'")\
+                                        [-2]).split(">")[1].split("<")[0]
+                                sendMail(fullname, email)
+                                message += email + \
+                                        colored(" / mail sent !", "green")
+                            except:
+                                message += colored("no email", "red")
+                        else:
+                            message += colored("not authorized ...", "blue")
                     except:
                         message += colored("no page", "red")
                     break
             print message
             br.back()
 
-        if page_nb == pages_count:
+        if PAGE_START == pages_count:
             break
-        page_nb += 1
+        PAGE_START += 1
 
 
 #br = github_login(username, password)

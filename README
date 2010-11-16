@@ -20,6 +20,8 @@ You have to create a settings file and fill the following variables:
     * TYPE_SEARCH (e.g. "Users")
     * TYPE_LANGUAGE (e.g. "Python")
     * LOCATION (e.g. "London")
+    * PAGE_START (first page to send mail, usually = 1)
+    * USER_START (first user of the PAGE_START to send mail, usually = 1)
  - your email
     * SENDER
     * EMAIL_PASSWORD
