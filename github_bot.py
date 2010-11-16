@@ -44,14 +44,19 @@ def github_login(login, password):
 
 def search(type, language, location):
     """Search the contacts according to your criteria"""
-    page_nb = 1
+    page_nb = 1 # To send emails from the first page
     while True:
         br.select_form(nr=0)
         br.set_all_readonly(False)
         br.form.new_control('text', 'language', {'value': language})
-        br['type'] = type
+        try:
+            """The search from the home page requires a string"""
+            br['type'] = type
+        except:
+            """After, when we are in the search page, it requires a sequence"""
+            br['type'] = [type]
         br['start_value'] = str(page_nb)
-        br['q'] = 'location:' + location
+        br['q'] = 'location:%s' % location
         request = br.submit()
         page = pq(request.read())
         pagination = page('.pagination').text()
