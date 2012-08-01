@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding:Utf-8 -*-
 '''
 File: github_bot.py
@@ -27,6 +27,7 @@ except:
 def github_connect(path=""):
     """Connect to the website"""
     br = Browser()
+    br.set_handle_robots(False)
     br.addheaders = [('User-agent', 'Firefox')]
     br.open('https://github.com/%s' % path)
     return br
@@ -72,15 +73,11 @@ def search(type, language, location):
                     try:
                         request = br.follow_link(link)
                         content = pq(request.read())
-                        try:
-                            fullname = content(".fn").text()
-                        except:
-                            fullname = ""
+                        fullname = content('span[itemprop="name"]').html() or ""
                         if user_nb >= USER_START:
                             try:
-                                email = unquote(content('.email').text().split("'")\
-                                        [-2]).split(">")[1].split("<")[0]
-                                sendMail(fullname, email)
+                                email = unquote(content(".email").attr("data-email"))
+                                #sendMail(fullname, email)
                                 message += email + \
                                         colored(" / mail sent !", "green")
                             except:

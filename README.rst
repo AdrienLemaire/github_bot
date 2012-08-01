@@ -10,6 +10,7 @@ Dependencies
 
 Make sure that you have a working Python_ 2.x >= 2.6::
 
+    $ mkvirtualenv -p python2 github_bot
     $ pip install -r requirements.txt
 
 
@@ -29,7 +30,7 @@ You have to create a ``local_settings.py`` file and fill the following variables
     * **USER_START** (first user of the PAGE_START to send mail, usually = 1)
  - your email
     * **SENDER**
-    * **EMAIL_PASSWORD**
+    * **SENDER_PASSWORD**
     * **HOST** (e.g. smtp.gmail.com)
     * **PORT** (e.g 587 for google)
  - your message
@@ -37,7 +38,12 @@ You have to create a ``local_settings.py`` file and fill the following variables
     * **MAIL_TITLE**
     * **MAIL_MESSAGE**
 
-Then you just have to run the project::
+A local_settings.py.sample file is available for commodity, so you can::
+
+    $ cp local_settings.py.sample local_settings.py
+
+
+Then you can run the project::
 
     $ python github_bot.py
 

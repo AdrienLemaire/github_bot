@@ -1,4 +1,6 @@
 *pdf
 pip-log.txt
 *pyc
+*swp
+.venv
 local_settings.py

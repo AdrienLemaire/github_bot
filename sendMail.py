@@ -29,18 +29,24 @@ def sendMail(fullname, recipient, encoding="utf-8"):
     msg['Subject'] = Header(MAIL_TITLE.encode(encoding), encoding)
     msg['From'] = SENDER
     msg['To'] = recipient
-    text = u"こんにちは %s さん,\n%s" % (fullname or "", MAIL_MESSAGE)
+    text = u"%s %s,\n%s" % (
+        MAIL_HELLO,
+        fullname or "",
+        MAIL_MESSAGE,
+    )
     msg.attach(MIMEText(text.encode(encoding), 'plain', encoding))
-    part = MIMEBase('application', 'octet-stream')
-    part.set_payload(open(FILE_JOINED, "rb").read())
-    Encoders.encode_base64(part)
-    part.add_header('Content-Disposition', 'attachment; ' +\
-        'filename="' + FILE_JOINED + '"')
-    msg.attach(part)
+    # Attach file if specified
+    if FILE_JOINED:
+        part = MIMEBase('application', 'octet-stream')
+        part.set_payload(open(FILE_JOINED, "rb").read())
+        Encoders.encode_base64(part)
+        part.add_header('Content-Disposition', 'attachment; ' +\
+            'filename="' + FILE_JOINED + '"')
+        msg.attach(part)
     s = smtplib.SMTP(HOST, PORT)
     s.starttls()
     s.login(SENDER, SENDER_PASSWORD)
     s.sendmail(SENDER, recipient, msg.as_string())
     s.quit()
 
-#sendMail(u'えいどりあん', SENDER)  # test
+sendMail(u'Test', SENDER)  # test

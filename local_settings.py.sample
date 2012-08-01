@@ -1,0 +1,19 @@
+USERNAME = ""
+PASSWORD = ""
+
+TYPE_SEARCH = "Users"
+TYPE_LANGUAGE = "Python"
+LOCATION = ""
+PAGE_START = 1
+USER_START = 1
+
+SENDER = "@gmail.com"
+SENDER_PASSWORD = ""
+HOST = "smtp.gmail.com"
+PORT = "587"
+
+FILE_JOINED = ""
+MAIL_TITLE = ""
+MAIL_HELLO = "Hello "
+MAIL_MESSAGE = """
+"""
