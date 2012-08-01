@@ -24,9 +24,6 @@ except:
 
 
 def sendMail(fullname, recipient, encoding="utf-8"):
-    if not recipient:
-        return colored("no email", "red")
-
     msg = MIMEMultipart('alternative')
     msg['Subject'] = Header(MAIL_TITLE.encode(encoding), encoding)
     msg['From'] = SENDER

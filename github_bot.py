@@ -6,19 +6,27 @@ Author: Adrien Lemaire
 Description: A small webscraper bot to get an emails' list
 '''
 
-# from python
 from mechanize import Browser
 from pyquery import PyQuery as pq
 from termcolor import colored
 from urllib import unquote
 from sendMail import sendMail
 
-# from project
 try:
     from local_settings import *  # NOQA
 except:
     import warnings
     warnings.warn("Please create a local_settings.py file")
+
+
+def get_email(content):
+    email = content(".email").attr("data-email")
+    return email and unquote(email) or colored("no email", "red")
+
+
+def get_fullname(content):
+    """scrape fullname from user page and return it"""
+    return content('span[itemprop="name"]').html() or ""
 
 
 def github_connect(path=""):
@@ -40,7 +48,7 @@ def github_login(login, password):
     return br
 
 
-def search(type, language, location):
+def search(br, type_search, language, location):
     """Search the contacts according to your criteria"""
 
     global PAGE_START, USER_START
@@ -52,10 +60,10 @@ def search(type, language, location):
         br.form.new_control('text', 'language', {'value': language})
         try:
             """The search from the home page requires a string"""
-            br['type'] = type
+            br['type'] = type_search
         except:
             """After, when we are in the search page, it requires a sequence"""
-            br['type'] = [type]
+            br['type'] = [type_search]
         br['start_value'] = str(PAGE_START)
         br['q'] = 'location:%s' % location
         request = br.submit()
@@ -63,26 +71,22 @@ def search(type, language, location):
         pagination = page('.pagination').text()
         pages_count = int(pagination[-1]) if pagination else 1
         for nickname in page('.result a').map(lambda i, a: pq(a).text()):
-            message = colored(nickname, "blue") + " => "
+            message = '%s => ' % colored(nickname, "blue")
             user_nb += 1
             for link in br.links():
                 if nickname in link.text:
-                    try:
-                        request = br.follow_link(link)
-                        content = pq(request.read())
-                        fullname = content('span[itemprop="name"]').html() or "" # NOQA
-                        if user_nb < USER_START:
-                            message += colored("not authorized ...", "blue")
-                            continue
+                    request = br.follow_link(link)
+                    content = pq(request.read())
+                    fullname = get_fullname(content)
 
-                        email = content(".email").attr("data-email")
-                        if email:
-                            email = unquote(email)
-                        message += sendMail(fullname, email)
-                    except ValueError, e:
-                        import ipdb; ipdb.set_trace()
-                        message += colored("no page", "red")
-                    break
+                    if user_nb < USER_START:
+                        message += colored("not authorized ...", "blue")
+                        continue
+
+                    email = get_email(content)
+                    if email:
+                        pass
+                        #message += sendMail(fullname, email)
             print message
             br.back()
 
@@ -91,6 +95,7 @@ def search(type, language, location):
         PAGE_START += 1
 
 
-#br = github_login(username, password)
-br = github_connect()
-search(TYPE_SEARCH, TYPE_LANGUAGE, LOCATION)
+if __name__ == '__main__':
+    #br = github_login(username, password)
+    br = github_connect()
+    search(br, TYPE_SEARCH, TYPE_LANGUAGE, LOCATION)
