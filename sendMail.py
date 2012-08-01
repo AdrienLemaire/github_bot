@@ -16,11 +16,10 @@ import smtplib
 
 # from project
 try:
-   from local_settings import *
+   from local_settings import *  # NOQA
 except:
    import warnings
-   warnings.warn("Please change you local settings file to be called "\
-                 "local_settings.py")
+   warnings.warn("Please create a local_settings.py file")
 
 
 
@@ -48,5 +47,3 @@ def sendMail(fullname, recipient, encoding="utf-8"):
     s.login(SENDER, SENDER_PASSWORD)
     s.sendmail(SENDER, recipient, msg.as_string())
     s.quit()
-
-sendMail(u'Test', SENDER)  # test
