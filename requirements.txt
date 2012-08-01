@@ -3,3 +3,9 @@
 mechanize
 pyquery
 termcolor
+
+# Optional libs
+
+ipdb
+pytest
+flake8
