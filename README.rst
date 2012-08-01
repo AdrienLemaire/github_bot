@@ -5,16 +5,18 @@ Useful bot to exploit the github search box in a large scale and send email to
 the users.
 
 
-.. warning:: *Ethical Concerns*
+Ethical Concerns
+++++++++++++++++
 
-    Please do not use that bot for spam, or you might get your account suspended
-    by Github, cf the ToS.
+Please do not use that bot for spam, or you might get your account suspended
+by Github, cf the ToS.
+Your messages could indicate they're automatically generated.
 
-    I personally only use it to ask some developers if they know of
-    job opportunities for me. I could mail each of them manually, but I value my
-    time, and this application is an excellent case to show my skills.
-    Also note that the Github API allows to get the name / email of a github
-    user (I just wrote that bot before the Github API got release)
+I personally only use it to ask some developers if they know of
+job opportunities for me. I could mail each of them manually, but I value my
+time, and this application is an example of my skills.
+Also note that the Github API allows to get the name / email of a github
+user (I just wrote that bot before the Github API got released)
 
 
 Dependencies
