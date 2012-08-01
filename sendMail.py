@@ -16,11 +16,10 @@ import smtplib
 
 # from project
 try:
-   from local_settings import *  # NOQA
+    from local_settings import *  # NOQA
 except:
-   import warnings
-   warnings.warn("Please create a local_settings.py file")
-
+    import warnings
+    warnings.warn("Please create a local_settings.py file")
 
 
 def sendMail(fullname, recipient, encoding="utf-8"):
@@ -39,8 +38,8 @@ def sendMail(fullname, recipient, encoding="utf-8"):
         part = MIMEBase('application', 'octet-stream')
         part.set_payload(open(FILE_JOINED, "rb").read())
         Encoders.encode_base64(part)
-        part.add_header('Content-Disposition', 'attachment; ' +\
-            'filename="' + FILE_JOINED + '"')
+        part.add_header('Content-Disposition', 'attachment; filename="%s"' %
+            FILE_JOINED)
         msg.attach(part)
     s = smtplib.SMTP(HOST, PORT)
     s.starttls()

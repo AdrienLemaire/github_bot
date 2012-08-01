@@ -4,12 +4,12 @@ Author: Adrien Lemaire
 Description: Tests for the github bot
 '''
 
-# from project
+from sendMail import sendMail
 try:
     from local_settings import SENDER
 except:
-   import warnings
-   warnings.warn("Please create a local_settings.py file")
+    import warnings
+    warnings.warn("Please create a local_settings.py file")
 
 
 class TestSendMail:

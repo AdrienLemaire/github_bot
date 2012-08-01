@@ -7,21 +7,18 @@ Description: A small webscraper bot to get an emails' list
 '''
 
 # from python
-import logging
 from mechanize import Browser
 from pyquery import PyQuery as pq
 from termcolor import colored
 from urllib import unquote
 from sendMail import sendMail
-from sys import stdout
 
 # from project
 try:
-   from local_settings import *
+    from local_settings import *  # NOQA
 except:
-   import warnings
-   warnings.warn("Please change you local settings file to be called "\
-                 "local_settings.py")
+    import warnings
+    warnings.warn("Please create a local_settings.py file")
 
 
 def github_connect(path=""):
@@ -47,7 +44,7 @@ def search(type, language, location):
     """Search the contacts according to your criteria"""
 
     global PAGE_START, USER_START
-    user_nb = 0 # counter
+    user_nb = 0  # counter
 
     while True:
         br.select_form(nr=0)
@@ -73,11 +70,11 @@ def search(type, language, location):
                     try:
                         request = br.follow_link(link)
                         content = pq(request.read())
-                        fullname = content('span[itemprop="name"]').html() or ""
+                        fullname = content('span[itemprop="name"]').html() or "" # NOQA
                         if user_nb >= USER_START:
                             try:
-                                email = unquote(content(".email").attr("data-email"))
-                                #sendMail(fullname, email)
+                                email = unquote(content(".email").attr("data-email"))  # NOQA
+                                sendMail(fullname, email)
                                 message += email + \
                                         colored(" / mail sent !", "green")
                             except:
