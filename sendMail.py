@@ -13,6 +13,7 @@ from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import smtplib
+from termcolor import colored
 
 # from project
 try:
@@ -23,6 +24,9 @@ except:
 
 
 def sendMail(fullname, recipient, encoding="utf-8"):
+    if not recipient:
+        return colored("no email", "red")
+
     msg = MIMEMultipart('alternative')
     msg['Subject'] = Header(MAIL_TITLE.encode(encoding), encoding)
     msg['From'] = SENDER
@@ -46,3 +50,4 @@ def sendMail(fullname, recipient, encoding="utf-8"):
     s.login(SENDER, SENDER_PASSWORD)
     s.sendmail(SENDER, recipient, msg.as_string())
     s.quit()
+    return "%s %s" % (recipient, colored(" / mail sent !", "green"))

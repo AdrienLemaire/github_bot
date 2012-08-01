@@ -71,17 +71,16 @@ def search(type, language, location):
                         request = br.follow_link(link)
                         content = pq(request.read())
                         fullname = content('span[itemprop="name"]').html() or "" # NOQA
-                        if user_nb >= USER_START:
-                            try:
-                                email = unquote(content(".email").attr("data-email"))  # NOQA
-                                sendMail(fullname, email)
-                                message += email + \
-                                        colored(" / mail sent !", "green")
-                            except:
-                                message += colored("no email", "red")
-                        else:
+                        if user_nb < USER_START:
                             message += colored("not authorized ...", "blue")
-                    except:
+                            continue
+
+                        email = content(".email").attr("data-email")
+                        if email:
+                            email = unquote(email)
+                        message += sendMail(fullname, email)
+                    except ValueError, e:
+                        import ipdb; ipdb.set_trace()
                         message += colored("no page", "red")
                     break
             print message
