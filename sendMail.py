@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
 File: sendMail.py
@@ -20,24 +20,24 @@ try:
     from local_settings import *  # NOQA
 except:
     import warnings
-    warnings.warn("Please create a local_settings.py file")
+    warnings.warn('Please create a local_settings.py file')
 
 
-def sendMail(fullname, recipient, encoding="utf-8"):
+def sendMail(fullname, recipient, encoding='utf-8'):
     msg = MIMEMultipart('alternative')
     msg['Subject'] = Header(MAIL_TITLE.encode(encoding), encoding)
     msg['From'] = SENDER
     msg['To'] = recipient
-    text = u"%s %s,\n%s" % (
+    text = u'%s %s,\n%s' % (
         MAIL_HELLO,
-        fullname or "",
+        fullname or '',
         MAIL_MESSAGE,
     )
     msg.attach(MIMEText(text.encode(encoding), 'plain', encoding))
     # Attach file if specified
     if FILE_JOINED:
         part = MIMEBase('application', 'octet-stream')
-        part.set_payload(open(FILE_JOINED, "rb").read())
+        part.set_payload(open(FILE_JOINED, 'rb').read())
         Encoders.encode_base64(part)
         part.add_header('Content-Disposition', 'attachment; filename="%s"' %
             FILE_JOINED)
@@ -47,4 +47,8 @@ def sendMail(fullname, recipient, encoding="utf-8"):
     s.login(SENDER, SENDER_PASSWORD)
     s.sendmail(SENDER, recipient, msg.as_string())
     s.quit()
-    return "%s %s" % (recipient, colored(" / mail sent !", "green"))
+    return '%s %s' % (recipient, colored(' / mail sent !', 'green'))
+
+if __name__ == '__main__':
+    # Real email testing, for you to check your message formatting
+    sendMail('Test', SENDER)

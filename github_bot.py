@@ -72,12 +72,21 @@ def search(br, type_search, language, location):
             br['type'] = [type_search]
         br['start_value'] = str(PAGE_START)
         br['q'] = 'location:%s' % location
-        request = br.submit()
+        try:
+            request = br.submit()
+        except:
+            print colored('Page not found', 'red')
+            print br.title()
+            br.back()
+            continue
+
         page = pq(request.read())
         if not pages_count:
             pages_count = get_pages_count(page)
+            print colored('Search has %s pages of results' % pages_count,
+                'blue')
         for nickname in page('.result a').map(lambda i, a: pq(a).text()):
-            message = '%s => ' % colored(nickname, "blue")
+            message = '%s => ' % colored(nickname, 'blue')
             user_nb += 1
             for link in br.links():
                 if nickname in link.text:
@@ -86,13 +95,13 @@ def search(br, type_search, language, location):
                     fullname = get_fullname(content)
 
                     if user_nb < USER_START:
-                        message += colored("not authorized ...", "blue")
+                        message += colored('not authorized ...', 'blue')
                         continue
 
                     email = get_email(content)
                     if email:
-                        message += "fake email sent"
-                        #message += sendMail(fullname, email)
+                        #message += 'fake email sent'
+                        message += sendMail(fullname, email)
             print message
             br.back()
 
@@ -100,6 +109,7 @@ def search(br, type_search, language, location):
             # End of search
             break
         PAGE_START += 1
+        print colored('Go to page %d' % PAGE_START, 'blue')
 
 
 if __name__ == '__main__':
