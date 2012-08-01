@@ -40,12 +40,17 @@ def sendMail(fullname, recipient, encoding='utf-8'):
         part.set_payload(open(FILE_JOINED, 'rb').read())
         Encoders.encode_base64(part)
         part.add_header('Content-Disposition', 'attachment; filename="%s"' %
-            FILE_JOINED)
+            FILE_JOINED.split("/")[-1])
         msg.attach(part)
     s = smtplib.SMTP(HOST, PORT)
     s.starttls()
     s.login(SENDER, SENDER_PASSWORD)
-    s.sendmail(SENDER, recipient, msg.as_string())
+    try:
+        s.sendmail(SENDER, recipient, msg.as_string())
+    except:
+        s.quit()
+        return  '%s %s' % (recipient, colored('Failed to send mail'))
+
     s.quit()
     return '%s %s' % (recipient, colored(' / mail sent !', 'green'))
 

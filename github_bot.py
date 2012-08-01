@@ -95,7 +95,7 @@ def search(br, type_search, language, location):
                     fullname = get_fullname(content)
 
                     if user_nb < USER_START:
-                        message += colored('not authorized ...', 'blue')
+                        message += colored('skipping ...', 'blue')
                         continue
 
                     email = get_email(content)
@@ -109,6 +109,7 @@ def search(br, type_search, language, location):
             # End of search
             break
         PAGE_START += 1
+        USER_START = 1
         print colored('Go to page %d' % PAGE_START, 'blue')
 
 
