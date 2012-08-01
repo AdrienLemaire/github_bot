@@ -29,6 +29,11 @@ def get_fullname(content):
     return content('span[itemprop="name"]').html() or ""
 
 
+def get_pages_count(content):
+    """scrape pagination from search results page and return it"""
+    pagination = content('.pagination').text()
+    return pagination and int(pagination.split()[-1]) or 1
+
 def github_connect(path=""):
     """Connect to the website"""
     br = Browser()
@@ -53,6 +58,7 @@ def search(br, type_search, language, location):
 
     global PAGE_START, USER_START
     user_nb = 0  # counter
+    pages_count = 0
 
     while True:
         br.select_form(nr=0)
@@ -68,8 +74,8 @@ def search(br, type_search, language, location):
         br['q'] = 'location:%s' % location
         request = br.submit()
         page = pq(request.read())
-        pagination = page('.pagination').text()
-        pages_count = int(pagination[-1]) if pagination else 1
+        if not pages_count:
+            pages_count = get_pages_count(page)
         for nickname in page('.result a').map(lambda i, a: pq(a).text()):
             message = '%s => ' % colored(nickname, "blue")
             user_nb += 1
@@ -85,12 +91,13 @@ def search(br, type_search, language, location):
 
                     email = get_email(content)
                     if email:
-                        pass
+                        message += "fake email sent"
                         #message += sendMail(fullname, email)
             print message
             br.back()
 
         if PAGE_START == pages_count:
+            # End of search
             break
         PAGE_START += 1
 
