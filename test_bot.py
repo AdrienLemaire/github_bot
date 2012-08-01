@@ -4,7 +4,12 @@ Author: Adrien Lemaire
 Description: Tests for the github bot
 '''
 
+from minimock import Mock
+import smtplib
+from unittest2 import TestCase
+
 from sendMail import sendMail
+
 try:
     from local_settings import SENDER
 except:
@@ -12,7 +17,12 @@ except:
     warnings.warn("Please create a local_settings.py file")
 
 
-class TestSendMail:
+class TestSendMail(TestCase):
+
+    def setUp(self):
+        smtplib.SMTP = Mock('smtplib.SMTP')
+        smtplib.SMTP.mock_returns = Mock('smtp_connection')
 
     def test_sendmail(self):
-        sendMail(u'Test', SENDER)
+
+        result = sendMail(u'Test', SENDER)

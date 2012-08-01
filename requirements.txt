@@ -9,3 +9,5 @@ termcolor
 ipdb
 pytest
 flake8
+MiniMock
+unittest2
